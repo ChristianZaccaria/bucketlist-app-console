@@ -1,2 +1,2 @@
 # bucketlist-app-console
-Console Notes App written in Kotlin
+Console Bucket List App written in Kotlin
