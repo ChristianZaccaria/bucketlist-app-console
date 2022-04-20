@@ -1,5 +1,9 @@
+import mu.KotlinLogging
 import utils.ScannerInput
 import java.lang.System.exit
+
+private val logger = KotlinLogging.logger {}
+
 
 fun main(args: Array<String>) {
 
@@ -49,39 +53,39 @@ fun runMenu(){
 
 
 fun addExperience(){
-    println("You chose Add Experience")
+    logger.info { "addExperience() function invoked" }
 }
 
 fun listExperiences(){
-    println("You chose List Experiences")
+    logger.info { "listExperiences() function invoked" }
 }
 
 fun updateExperience(){
-    println("You chose Update Experience")
+    logger.info { "updateExperience() function invoked" }
 }
 
 fun deleteExperience(){
-    println("You chose Delete Experience")
+    logger.info { "deleteExperience() function invoked" }
 }
 
 fun crossOffExperience(){
-    println("You chose Cross Off Experience")
+    logger.info { "crossOffExperience() function invoked" }
 }
 
 fun searchExperiences(){
-    println("You chose Search for Added Experiences")
+    logger.info { "searchExperiences() function invoked" }
 }
 
 
 fun save() {
-    println("Saved to File")
+    logger.info { "save() function invoked" }
 }
 
 fun load() {
-    println("Loaded from File")
+    logger.info { "load() function invoked" }
 }
 
 fun exitApp(){
-    println("Exiting...bye")
+    logger.info { "exitApp() function invoked" }
     exit(0)
 }
