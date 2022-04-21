@@ -3,6 +3,9 @@ package controllers
 import models.Experience
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertTrue
+import persistence.JSONSerializer
+import persistence.XMLSerializer
+import java.io.File
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 
@@ -13,8 +16,8 @@ class ExperienceAPITest {
     private var rockClimb: Experience? = null
     private var graduate: Experience? = null
     private var concert: Experience? = null
-    private var populatedExperiences: ExperienceAPI? = ExperienceAPI()
-    private var emptyExperiences: ExperienceAPI? = ExperienceAPI()
+    private var populatedExperiences: ExperienceAPI? = ExperienceAPI(XMLSerializer(File("experiences.xml")))
+    private var emptyExperiences: ExperienceAPI? = ExperienceAPI(XMLSerializer(File("experiences.xml")))
 
     @BeforeEach
     fun setup(){
@@ -244,10 +247,13 @@ class ExperienceAPITest {
     @Nested
     inner class UpdateExperiences {
         @Test
-        fun `updating an experience that does not exist returns false`(){
-            assertFalse(populatedExperiences!!.updateExperience(6, Experience("Updating experience", "Update", "Hobby", "2022-09-22", 2, false)))
-            assertFalse(populatedExperiences!!.updateExperience(-1, Experience("Updating experience", "Update", "Hobby", "2023-09-21", 2, false)))
-            assertFalse(emptyExperiences!!.updateExperience(0, Experience("Updating experience", "Update", "Hobby", "2022-07-12", 2, false)))
+        fun `updating an experience that does not exist returns false`() {
+            assertFalse(populatedExperiences!!.updateExperience(6,
+                Experience("Updating experience", "Update", "Hobby", "2022-09-22", 2, false)))
+            assertFalse(populatedExperiences!!.updateExperience(-1,
+                Experience("Updating experience", "Update", "Hobby", "2023-09-21", 2, false)))
+            assertFalse(emptyExperiences!!.updateExperience(0,
+                Experience("Updating experience", "Update", "Hobby", "2022-07-12", 2, false)))
         }
 
         @Test
@@ -260,13 +266,95 @@ class ExperienceAPITest {
 
 
             //update experience 5 with new information and ensure contents updated successfully
-            assertTrue(populatedExperiences!!.updateExperience(4, Experience("Updating Experience", "Update", "Hobby", "2024-02-25", 2, false)))
+            assertTrue(populatedExperiences!!.updateExperience(4,
+                Experience("Updating Experience", "Update", "Hobby", "2024-02-25", 2, false)))
             Assertions.assertEquals("Updating Experience", populatedExperiences!!.findExperience(4)!!.experienceTitle)
             Assertions.assertEquals(2, populatedExperiences!!.findExperience(4)!!.experiencePriority)
             Assertions.assertEquals("Hobby", populatedExperiences!!.findExperience(4)!!.experienceCategory)
         }
-
-
     }
+
+
+        @Nested
+        inner class PersistenceTests {
+            @Test
+            fun `saving and loading an empty collection in XML doesn't crash app`() {
+                // Saving an empty experiences.XML file.
+                val storingExperiences = ExperienceAPI(XMLSerializer(File("experiences.xml")))
+                storingExperiences.store()
+
+                //Loading the empty experiences.xml file into a new object
+                val loadedExperiences = ExperienceAPI(XMLSerializer(File("experiences.xml")))
+                loadedExperiences.load()
+
+                //Comparing the source of the experiences (storingExperiences) with the XML loaded experiences (loadedExperiences)
+                Assertions.assertEquals(0, storingExperiences.numberOfExperiences())
+                Assertions.assertEquals(0, loadedExperiences.numberOfExperiences())
+                assertEquals(storingExperiences.numberOfExperiences(), loadedExperiences.numberOfExperiences())
+            }
+
+            @Test
+            fun `saving and loading a loaded collection in XML doesn't loose data`() {
+                // Storing 3 experiences to the experiences.XML file.
+                val storingExperiences = ExperienceAPI(XMLSerializer(File("experiences.xml")))
+                storingExperiences.add(graduate!!)
+                storingExperiences.add(concert!!)
+                storingExperiences.add(summerHoliday!!)
+                storingExperiences.store()
+
+                //Loading experiences.xml into a different collection
+                val loadedExperiences = ExperienceAPI(XMLSerializer(File("experiences.xml")))
+                loadedExperiences.load()
+
+                //Comparing the source of the experiences (storingExperiences) with the XML loaded experiences (loadedExperiences)
+                Assertions.assertEquals(3, storingExperiences.numberOfExperiences())
+                Assertions.assertEquals(3, loadedExperiences.numberOfExperiences())
+                assertEquals(storingExperiences.numberOfExperiences(), loadedExperiences.numberOfExperiences())
+                assertEquals(storingExperiences.findExperience(0), loadedExperiences.findExperience(0))
+                assertEquals(storingExperiences.findExperience(1), loadedExperiences.findExperience(1))
+                assertEquals(storingExperiences.findExperience(2), loadedExperiences.findExperience(2))
+            }
+
+            @Test
+            fun `saving and loading an empty collection in JSON doesn't crash app`() {
+                // Saving an empty experiences.json file.
+                val storingExperiences = ExperienceAPI(JSONSerializer(File("experiences.json")))
+                storingExperiences.store()
+
+                //Loading the empty experiences.json file into a new object
+                val loadedExperiences = ExperienceAPI(JSONSerializer(File("experiences.json")))
+                loadedExperiences.load()
+
+                //Comparing the source of the experiences (storingExperiences) with the json loaded experiences (loadedExperiences)
+                Assertions.assertEquals(0, storingExperiences.numberOfExperiences())
+                Assertions.assertEquals(0, loadedExperiences.numberOfExperiences())
+                assertEquals(storingExperiences.numberOfExperiences(), loadedExperiences.numberOfExperiences())
+            }
+
+            @Test
+            fun `saving and loading an loaded collection in JSON doesn't loose data`() {
+                // Storing 3 experiences to the experiences.json file.
+                val storingExperiences = ExperienceAPI(JSONSerializer(File("experiences.json")))
+                storingExperiences.add(graduate!!)
+                storingExperiences.add(concert!!)
+                storingExperiences.add(summerHoliday!!)
+                storingExperiences.store()
+
+                //Loading experiences.json into a different collection
+                val loadedExperiences = ExperienceAPI(JSONSerializer(File("experiences.json")))
+                loadedExperiences.load()
+
+                //Comparing the source of the experiences (storingExperiences) with the json loaded experiences (loadedExperiences)
+                Assertions.assertEquals(3, storingExperiences.numberOfExperiences())
+                Assertions.assertEquals(3, loadedExperiences.numberOfExperiences())
+                assertEquals(storingExperiences.numberOfExperiences(), loadedExperiences.numberOfExperiences())
+                assertEquals(storingExperiences.findExperience(0), loadedExperiences.findExperience(0))
+                assertEquals(storingExperiences.findExperience(1), loadedExperiences.findExperience(1))
+                assertEquals(storingExperiences.findExperience(2), loadedExperiences.findExperience(2))
+            }
+        }
+
+
+
 
 }

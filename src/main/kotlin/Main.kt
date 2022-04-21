@@ -1,13 +1,17 @@
 import controllers.ExperienceAPI
 import models.Experience
 import mu.KotlinLogging
+import persistence.JSONSerializer
+import persistence.XMLSerializer
 import utils.ScannerInput
 import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
+import java.io.File
 import java.lang.System.exit
 
 private val logger = KotlinLogging.logger {}
-private val experienceAPI = ExperienceAPI()
+//private val experienceAPI = ExperienceAPI(XMLSerializer(File("experiences.xml")))
+private val experienceAPI = ExperienceAPI(JSONSerializer(File("experiences.json")))
 
 
 fun main(args: Array<String>) {
@@ -132,14 +136,24 @@ fun searchExperiences(){
 
 
 fun save() {
-    logger.info { "save() function invoked" }
+    try {
+        experienceAPI.store()
+        println("Successfully Saved to File")
+    } catch (e: Exception) {
+        System.err.println("Error writing to file: $e")
+    }
 }
 
 fun load() {
-    logger.info { "load() function invoked" }
+    try {
+        experienceAPI.load()
+        println("Successfully Loaded from File")
+    } catch (e: Exception) {
+        System.err.println("Error reading from file: $e")
+    }
 }
 
-fun exitApp(){
-    logger.info { "exitApp() function invoked" }
-    exit(0)
-}
+fun exitApp() {
+        logger.info { "exitApp() function invoked" }
+        exit(0)
+    }

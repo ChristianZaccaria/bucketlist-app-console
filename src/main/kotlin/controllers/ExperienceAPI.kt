@@ -1,9 +1,11 @@
 package controllers
 
 import models.Experience
+import persistence.Serializer
 
-class ExperienceAPI {
+class ExperienceAPI(serializerType: Serializer) {
 
+    private var serializer: Serializer = serializerType
     private var experiences = ArrayList<Experience>()
 
     fun add(experience: Experience): Boolean {
@@ -117,7 +119,15 @@ class ExperienceAPI {
                 experiences.indexOf(experience).toString() + ": " + experience.toString() }
 
 
+    @Throws(Exception::class)
+    fun load() {
+        experiences = serializer.read() as ArrayList<Experience>
+    }
 
+    @Throws(Exception::class)
+    fun store() {
+        serializer.write(experiences)
+    }
 
 }
 
