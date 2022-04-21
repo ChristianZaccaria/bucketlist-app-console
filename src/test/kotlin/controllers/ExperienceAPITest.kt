@@ -125,4 +125,58 @@ class ExperienceAPITest {
             assertFalse(achievedExperiencesString.contains("ed sheeran"))
         }
     }
+
+    @Nested
+    inner class PriorityExperiences {
+        @Test
+        fun `listExperiencesBySelectedPriority returns No Experiences when ArrayList is empty`() {
+            Assertions.assertEquals(0, emptyExperiences!!.numberOfExperiences())
+            assertTrue(emptyExperiences!!.listExperiencesBySelectedPriority(3).lowercase().contains("no experiences")
+            )
+        }
+
+        @Test
+        fun `listExperiencesBySelectedPriority returns no experiences when no experiences of that priority exist`() {
+            //Priority 1 (1 item), 2 (none), 3 (1 item). 4 (2 items), 5 (1 item)
+            Assertions.assertEquals(5, populatedExperiences!!.numberOfExperiences())
+            val priority2String = populatedExperiences!!.listExperiencesBySelectedPriority(2).lowercase()
+            assertTrue(priority2String.contains("no experiences"))
+            assertTrue(priority2String.contains("2"))
+        }
+
+        @Test
+        fun `listExperiencesBySelectedPriority returns all experiences that match that priority when experiences of that priority exist`() {
+            //Priority 1 (1 item), 2 (none), 3 (1 item). 4 (2 items), 5 (1 item)
+            Assertions.assertEquals(5, populatedExperiences!!.numberOfExperiences())
+            val priority1String = populatedExperiences!!.listExperiencesBySelectedPriority(1).lowercase()
+            assertTrue(priority1String.contains("1 experience"))
+            assertTrue(priority1String.contains("priority 1"))
+            assertTrue(priority1String.contains("summer holiday"))
+            assertFalse(priority1String.contains("rock climbing"))
+            assertFalse(priority1String.contains("learning to play piano"))
+            assertFalse(priority1String.contains("graduate"))
+            assertFalse(priority1String.contains("ed sheeran"))
+
+
+            val priority4String = populatedExperiences!!.listExperiencesBySelectedPriority(4).lowercase()
+            assertTrue(priority4String.contains("2 experience"))
+            assertTrue(priority4String.contains("priority 4"))
+            assertFalse(priority4String.contains("ed sheeran"))
+            assertTrue(priority4String.contains("graduate"))
+            assertTrue(priority4String.contains("rock climbing"))
+            assertFalse(priority4String.contains("learning to play piano"))
+            assertFalse(priority4String.contains("summer holiday"))
+
+
+            val priority3String = populatedExperiences!!.listExperiencesBySelectedPriority(3).lowercase()
+            assertTrue(priority3String.contains("1 experience"))
+            assertTrue(priority3String.contains("priority 3"))
+            assertTrue(priority3String.contains("ed sheeran"))
+            assertTrue(priority3String.contains("concert"))
+            assertFalse(priority3String.contains("test app"))
+            assertFalse(priority3String.contains("learning to play piano"))
+            assertFalse(priority3String.contains("summer holiday"))
+        }
+    }
+
 }
