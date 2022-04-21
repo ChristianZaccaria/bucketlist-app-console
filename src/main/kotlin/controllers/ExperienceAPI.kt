@@ -31,6 +31,27 @@ class ExperienceAPI {
     fun numberOfAchievedExperiences(): Int =  experiences.count {experience: Experience -> experience.isExperienceAchieved}
 
 
+    fun listExperiencesBySelectedPriority(priority: Int): String =
+        if (experiences.isEmpty()) "no experiences stored in your Bucket List"
+
+        else if (numberOfExperiencesByPriority(priority) == 0) "\nNo experiences with priority: $priority"
+
+        else "\n${numberOfExperiencesByPriority(priority)} experiences with priority $priority:\n" +
+                experiences.filter { experience -> experience.experiencePriority == priority }
+                    .joinToString(separator = "\n") { experience -> experiences.indexOf(experience).toString() + ": " + experience.toString()}
+
+
+
+    //helper method to determine how many experiences there are of a specific priority
+    fun numberOfExperiencesByPriority(priorityToCheck :Int): Int = experiences.count {experience: Experience -> experience.experiencePriority == priorityToCheck}
+
+
+
+
+
+
+
+
 
     fun numberOfExperiences(): Int {
         return experiences.size
