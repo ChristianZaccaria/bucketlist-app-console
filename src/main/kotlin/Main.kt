@@ -1,6 +1,7 @@
 import controllers.ExperienceAPI
 import models.Experience
 import mu.KotlinLogging
+import persistence.JSONSerializer
 import persistence.XMLSerializer
 import utils.ScannerInput
 import utils.ScannerInput.readNextInt
@@ -9,7 +10,8 @@ import java.io.File
 import java.lang.System.exit
 
 private val logger = KotlinLogging.logger {}
-private val experienceAPI = ExperienceAPI(XMLSerializer(File("experiences.xml")))
+//private val experienceAPI = ExperienceAPI(XMLSerializer(File("experiences.xml")))
+private val experienceAPI = ExperienceAPI(JSONSerializer(File("experiences.json")))
 
 
 fun main(args: Array<String>) {
