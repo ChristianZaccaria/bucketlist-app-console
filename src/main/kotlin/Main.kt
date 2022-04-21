@@ -63,11 +63,11 @@ fun runMenu(){
 
 fun addExperience(){
     //logger.info { "addExperience() function invoked" }
-    var experienceTitle = ScannerInput.readNextLine("Enter a Title for the experience: ")
-    var experienceDescription = ScannerInput.readNextLine("Enter a Description for the experience: ")
-    var experienceCategory = ScannerInput.readNextLine("Enter the Category of the experience: ")
-    var dateToAchieve = ScannerInput.readNextLine("Enter the Date to achieve the experience: ")
-    var experiencePriority = ScannerInput.readNextInt("Enter priority (1-low, 2, 3, 4, 5-high): ")
+    var experienceTitle = readNextLine("Enter a title for the experience: ")
+    var experienceDescription = readNextLine("Enter a description for the experience: ")
+    var experienceCategory = readNextLine("Enter one of the categories: [Hobby, Concert, Travel, Career, Entertainment, Other] ")
+    var dateToAchieve = readNextLine("Enter the date you plan to achieve the experience: ")
+    var experiencePriority = readNextInt("Enter a priority [1-low, 2, 3, 4, 5-high]: ")
 
     val isAdded = experienceAPI.add(Experience(experienceTitle, experienceDescription, experienceCategory, dateToAchieve, experiencePriority, false))
 
