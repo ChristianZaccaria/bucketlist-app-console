@@ -1,12 +1,10 @@
 package controllers
 
 import models.Experience
-import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 
 class ExperienceAPITest {
 
@@ -84,6 +82,26 @@ class ExperienceAPITest {
             assertTrue(experiencesString.contains("rock climbing"))
             assertTrue(experiencesString.contains("graduate"))
             assertTrue(experiencesString.contains("ed sheeran"))
+        }
+    }
+
+    @Nested
+    inner class NotYetAchievedExperiences {
+        @Test
+        fun `listNotYetAchievedExperiences returns 'All experiences stored in Bucket List have been achieved' when ArrayList is empty`(){
+            Assertions.assertEquals(0, emptyExperiences!!.numberOfNotYetAchievedExperiences())
+            assertTrue(emptyExperiences!!.listNotYetAchievedExperiences().lowercase().contains("all experiences stored in bucket list have been achieved"))
+        }
+
+        @Test
+        fun `listNotYetAchievedExperiences returns the pending experiences to achieve stored in ArrayList`(){
+            Assertions.assertEquals(4, populatedExperiences!!.numberOfNotYetAchievedExperiences())
+            val NotYetExperiencesString = populatedExperiences!!.listNotYetAchievedExperiences().lowercase()
+            assertTrue(NotYetExperiencesString.contains("learning to play piano"))
+            assertTrue(NotYetExperiencesString.contains("rock climbing"))
+            assertTrue(NotYetExperiencesString.contains("summer holiday"))
+            assertFalse(NotYetExperiencesString.contains("graduate"))
+            assertTrue(NotYetExperiencesString.contains("ed sheeran"))
         }
     }
 }
