@@ -2,6 +2,8 @@ import controllers.ExperienceAPI
 import models.Experience
 import mu.KotlinLogging
 import utils.ScannerInput
+import utils.ScannerInput.readNextInt
+import utils.ScannerInput.readNextLine
 import java.lang.System.exit
 
 private val logger = KotlinLogging.logger {}
@@ -79,7 +81,28 @@ fun listExperiences(){
 }
 
 fun updateExperience(){
-    logger.info { "updateExperience() function invoked" }
+    //logger.info { "updateExperience() function invoked" }
+    listExperiences()
+    if (experienceAPI.numberOfExperiences() > 0) {
+        //only ask the user to choose the experience if there are any in the Bucket List
+        val indexToUpdate = readNextInt("Enter the index of the experience to update: ")
+        if (experienceAPI.isValidIndex(indexToUpdate)) {
+            var experienceTitle = readNextLine("Enter a title for the experience: ")
+            var experienceDescription = readNextLine("Enter a description for the experience: ")
+            var experienceCategory = readNextLine("Enter one of the categories: [Hobby, Concert, Travel, Career, Entertainment, Other] ")
+            var dateToAchieve = readNextLine("Enter the date you plan to achieve the experience: ")
+            var experiencePriority = readNextInt("Enter a priority [1-low, 2, 3, 4, 5-high]: ")
+
+            //pass the index of the experience and the new experience details to ExperienceAPI for updating and check for success.
+            if (experienceAPI.updateExperience(indexToUpdate, Experience(experienceTitle, experienceDescription, experienceCategory, dateToAchieve, experiencePriority, false))){
+                println("Update Successful")
+            } else {
+                println("Update Failed")
+            }
+        } else {
+            println("There are no experiences by the index number entered")
+        }
+    }
 }
 
 fun deleteExperience(){
@@ -87,7 +110,7 @@ fun deleteExperience(){
     listExperiences()
     if (experienceAPI.numberOfExperiences() > 0) {
         //only ask the user to choose the experience to delete if there are any in Bucket List
-        val indexToDelete = ScannerInput.readNextInt("Enter the index of the experience to delete: ")
+        val indexToDelete = readNextInt("Enter the index of the experience to delete: ")
         //pass the index of the experience to ExperienceAPI for deleting and check for success.
         val experienceToDelete = experienceAPI.deleteExperience(indexToDelete)
         if (experienceToDelete != null) {
