@@ -20,7 +20,7 @@ class ExperienceAPITest {
     fun setup(){
         learnPiano = Experience("Learning to play Piano", "Music is Beautiful","Hobby", "2024-02-03", 5,false)
         summerHoliday = Experience("Summer Holiday to Spain", "I wish to visit Barcelona", "Travel", "2023-06-23", 1, false)
-        rockClimb = Experience("Going Rock Climbing", "I have never gone rock climbing", "Entertainment", "2022-06-27",4,  false)
+        rockClimb = Experience("Going Rock Climbing", "I have never gone rock climbing", "Hobby", "2022-06-27",4,  false)
         graduate = Experience("Graduate from WIT", "It is my goal to graduate at WIT", "Career", "2022-04-10",4,true)
         concert = Experience("Ed Sheeran concert", "Go to Ed Sheeran's concert in Dublin", "Concert", "2022-04-29", 3,false)
 
@@ -176,6 +176,49 @@ class ExperienceAPITest {
             assertFalse(priority3String.contains("test app"))
             assertFalse(priority3String.contains("learning to play piano"))
             assertFalse(priority3String.contains("summer holiday"))
+        }
+    }
+
+
+    @Nested
+    inner class CategoryExperiences {
+        @Test
+        fun `listExperiencesByCategory returns No Experiences when ArrayList is empty`() {
+            Assertions.assertEquals(0, emptyExperiences!!.numberOfExperiences())
+            assertTrue(emptyExperiences!!.listExperiencesByCategory("").lowercase().contains("no experiences stored in your bucket list")
+            )
+        }
+
+
+        @Test
+        fun `listExperiencesByCategory returns no experiences when no experiences of that category exist`() {
+            Assertions.assertEquals(5, populatedExperiences!!.numberOfExperiences())
+            val categoryDummyString = populatedExperiences!!.listExperiencesByCategory("fooling around").lowercase()
+            assertTrue(categoryDummyString.contains("no experiences"))
+            assertTrue(categoryDummyString.contains("fooling around"))
+        }
+
+        @Test
+        fun `listExperiencesByCategory returns all experiences that match that category when experiences of that category exist`() {
+            Assertions.assertEquals(5, populatedExperiences!!.numberOfExperiences())
+            val categoryHobbyString = populatedExperiences!!.listExperiencesByCategory("Hobby").lowercase()
+            assertTrue(categoryHobbyString.contains("2 experience"))
+            assertTrue(categoryHobbyString.contains("category hobby"))
+            assertFalse(categoryHobbyString.contains("travel"))
+            assertFalse(categoryHobbyString.contains("entertainment"))
+            assertFalse(categoryHobbyString.contains("career"))
+            assertFalse(categoryHobbyString.contains("Work"))
+            assertTrue(categoryHobbyString.contains("play piano"))
+
+
+            val categoryTravelString = populatedExperiences!!.listExperiencesByCategory("travel").lowercase()
+            assertTrue(categoryTravelString.contains("1 experience"))
+            assertTrue(categoryTravelString.contains("category travel"))
+            assertFalse(categoryTravelString.contains("concert"))
+            assertFalse(categoryTravelString.contains("career"))
+            assertTrue(categoryTravelString.contains("travel"))
+            assertFalse(categoryTravelString.contains("Hobby"))
+            assertTrue(categoryTravelString.contains("spain"))
         }
     }
 
