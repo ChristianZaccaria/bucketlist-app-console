@@ -15,7 +15,20 @@ class ExperienceAPI {
         else formatListString(experiences)
 
 
+    fun listNotYetAchievedExperiences(): String =
+        if (numberOfNotYetAchievedExperiences() == 0) "All experiences stored in your Bucket List have been achieved"
+        else formatListString( experiences.filter { experience -> !experience.isExperienceAchieved } )
 
+    //helper method to determine how many Not Yet Achieved experiences there are in the Bucket List
+    fun numberOfNotYetAchievedExperiences(): Int = experiences.count{experience: Experience -> !experience.isExperienceAchieved}
+
+
+    fun listAchievedExperiences(): String =
+        if (numberOfAchievedExperiences() == 0) "No experiences in your Bucket List have been achieved yet."
+        else formatListString( experiences.filter { experience -> experience.isExperienceAchieved } )
+
+    //helper method to determine how many experiences have been achieved
+    fun numberOfAchievedExperiences(): Int =  experiences.count {experience: Experience -> experience.isExperienceAchieved}
 
 
 
