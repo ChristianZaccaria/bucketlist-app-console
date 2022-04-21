@@ -3,6 +3,8 @@ package controllers
 import models.Experience
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertTrue
+import persistence.XMLSerializer
+import java.io.File
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 
@@ -13,8 +15,8 @@ class ExperienceAPITest {
     private var rockClimb: Experience? = null
     private var graduate: Experience? = null
     private var concert: Experience? = null
-    private var populatedExperiences: ExperienceAPI? = ExperienceAPI()
-    private var emptyExperiences: ExperienceAPI? = ExperienceAPI()
+    private var populatedExperiences: ExperienceAPI? = ExperienceAPI(XMLSerializer(File("experiences.xml")))
+    private var emptyExperiences: ExperienceAPI? = ExperienceAPI(XMLSerializer(File("experiences.xml")))
 
     @BeforeEach
     fun setup(){
