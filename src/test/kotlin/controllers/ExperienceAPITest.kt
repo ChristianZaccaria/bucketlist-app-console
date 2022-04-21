@@ -24,7 +24,7 @@ class ExperienceAPITest {
         graduate = Experience("Graduate from WIT", "It is my goal to graduate at WIT", "Career", "2022-04-10",4,true)
         concert = Experience("Ed Sheeran concert", "Go to Ed Sheeran's concert in Dublin", "Concert", "2022-04-29", 3,false)
 
-        //adding 5 Note to the notes api
+        //adding 5 Experiences to the experience api
         populatedExperiences!!.add(learnPiano!!)
         populatedExperiences!!.add(summerHoliday!!)
         populatedExperiences!!.add(rockClimb!!)
@@ -88,9 +88,9 @@ class ExperienceAPITest {
     @Nested
     inner class NotYetAchievedExperiences {
         @Test
-        fun `listNotYetAchievedExperiences returns 'All experiences stored in Bucket List have been achieved' when ArrayList is empty`(){
+        fun `listNotYetAchievedExperiences returns 'All experiences stored in your Bucket List have been achieved' when ArrayList is empty`(){
             Assertions.assertEquals(0, emptyExperiences!!.numberOfNotYetAchievedExperiences())
-            assertTrue(emptyExperiences!!.listNotYetAchievedExperiences().lowercase().contains("all experiences stored in bucket list have been achieved"))
+            assertTrue(emptyExperiences!!.listNotYetAchievedExperiences().lowercase().contains("all experiences stored in your bucket list have been achieved"))
         }
 
         @Test
@@ -102,6 +102,27 @@ class ExperienceAPITest {
             assertTrue(NotYetExperiencesString.contains("summer holiday"))
             assertFalse(NotYetExperiencesString.contains("graduate"))
             assertTrue(NotYetExperiencesString.contains("ed sheeran"))
+        }
+    }
+
+    @Nested
+    inner class AchievedExperiences {
+        @Test
+        fun `listAchievedExperiences returns 'No experiences in your Bucket List have been achieved yet' when ArrayList is empty`() {
+            Assertions.assertEquals(0, emptyExperiences!!.numberOfAchievedExperiences())
+            assertTrue(emptyExperiences!!.listAchievedExperiences().lowercase().contains("no experiences in your bucket list have been achieved yet."))
+        }
+
+
+        @Test
+        fun `listAchievedExperiences returns Achieved Experiences stored in ArrayList`() {
+            Assertions.assertEquals(1, populatedExperiences!!.numberOfAchievedExperiences())
+            val achievedExperiencesString = populatedExperiences!!.listAchievedExperiences().lowercase()
+            assertFalse(achievedExperiencesString.contains("learning to play piano"))
+            assertFalse(achievedExperiencesString.contains("rock climbing"))
+            assertFalse(achievedExperiencesString.contains("summer holiday"))
+            assertTrue(achievedExperiencesString.contains("graduate"))
+            assertFalse(achievedExperiencesString.contains("ed sheeran"))
         }
     }
 }
