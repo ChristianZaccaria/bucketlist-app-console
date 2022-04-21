@@ -241,4 +241,32 @@ class ExperienceAPITest {
         }
     }
 
+    @Nested
+    inner class UpdateExperiences {
+        @Test
+        fun `updating an experience that does not exist returns false`(){
+            assertFalse(populatedExperiences!!.updateExperience(6, Experience("Updating experience", "Update", "Hobby", "2022-09-22", 2, false)))
+            assertFalse(populatedExperiences!!.updateExperience(-1, Experience("Updating experience", "Update", "Hobby", "2023-09-21", 2, false)))
+            assertFalse(emptyExperiences!!.updateExperience(0, Experience("Updating experience", "Update", "Hobby", "2022-07-12", 2, false)))
+        }
+
+        @Test
+        fun `updating an experience that exists returns true and updates`() {
+            //check experience 5 exists and check the contents
+            assertEquals(concert, populatedExperiences!!.findExperience(4))
+            Assertions.assertEquals("Ed Sheeran concert", populatedExperiences!!.findExperience(4)!!.experienceTitle)
+            Assertions.assertEquals(3, populatedExperiences!!.findExperience(4)!!.experiencePriority)
+            Assertions.assertEquals("Concert", populatedExperiences!!.findExperience(4)!!.experienceCategory)
+
+
+            //update experience 5 with new information and ensure contents updated successfully
+            assertTrue(populatedExperiences!!.updateExperience(4, Experience("Updating Experience", "Update", "Hobby", "2024-02-25", 2, false)))
+            Assertions.assertEquals("Updating Experience", populatedExperiences!!.findExperience(4)!!.experienceTitle)
+            Assertions.assertEquals(2, populatedExperiences!!.findExperience(4)!!.experiencePriority)
+            Assertions.assertEquals("Hobby", populatedExperiences!!.findExperience(4)!!.experienceCategory)
+        }
+
+
+    }
+
 }

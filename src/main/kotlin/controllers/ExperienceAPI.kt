@@ -67,7 +67,24 @@ class ExperienceAPI {
         else null
     }
 
+    fun updateExperience(indexToUpdate: Int, experience: Experience?): Boolean {
+        //find the experience object by the index number
+        val foundExperience = findExperience(indexToUpdate)
 
+        //if the experience exists, use the experience details passed as parameters to update the found experience in the ArrayList.
+        if ((foundExperience != null) && (experience != null)) {
+            foundExperience.experienceTitle = experience.experienceTitle
+            foundExperience.experienceDescription = experience.experienceDescription
+            foundExperience.experienceCategory = experience.experienceCategory
+            foundExperience.dateToAchieve = experience.dateToAchieve
+            foundExperience.experiencePriority = experience.experiencePriority
+
+
+            return true
+        }
+        //if the experience was not found, return false, indicating that the update was not successful
+        return false
+    }
 
 
 
@@ -83,9 +100,14 @@ class ExperienceAPI {
         } else null
     }
 
+
     //utility method to determine if an index is valid in a list.
     fun isValidListIndex(index: Int, list: List<Any>): Boolean {
         return (index >= 0 && index < list.size)
+    }
+
+    fun isValidIndex(index: Int) :Boolean{
+        return isValidListIndex(index, experiences);
     }
 
     //Helper Method
