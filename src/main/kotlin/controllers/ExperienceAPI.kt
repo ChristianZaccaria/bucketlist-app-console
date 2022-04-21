@@ -47,6 +47,20 @@ class ExperienceAPI {
 
 
 
+    fun listExperiencesByCategory(category: String): String =
+        if (experiences.isEmpty()) "no experiences stored in your Bucket List"
+
+        else if (numberOfExperiencesByCategory(category) == 0) "\nNo experiences with category: ${category.lowercase()}"
+
+        else "\n${numberOfExperiencesByCategory(category.lowercase())} experiences with category ${category.lowercase()}\n" +
+                experiences.filter { experience -> experience.experienceCategory.lowercase() == category.lowercase() }
+                    .joinToString(separator = "\n") { experience -> experiences.indexOf(experience).toString() + ": " + experience.toString()}
+
+
+    fun numberOfExperiencesByCategory(categoryCheck: String): Int = experiences.count{experience: Experience -> experience.experienceCategory.lowercase() == categoryCheck.lowercase()}
+
+
+
 
 
 
