@@ -60,6 +60,12 @@ class ExperienceAPI {
     fun numberOfExperiencesByCategory(categoryCheck: String): Int = experiences.count{experience: Experience -> experience.experienceCategory.lowercase() == categoryCheck.lowercase()}
 
 
+    fun deleteExperience(indexToDelete: Int): Experience? {
+        return if (isValidListIndex(indexToDelete, experiences)) {
+            experiences.removeAt(indexToDelete)
+        }
+        else null
+    }
 
 
 

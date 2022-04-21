@@ -83,7 +83,20 @@ fun updateExperience(){
 }
 
 fun deleteExperience(){
-    logger.info { "deleteExperience() function invoked" }
+    //logger.info { "deleteExperience() function invoked" }
+    listExperiences()
+    if (experienceAPI.numberOfExperiences() > 0) {
+        //only ask the user to choose the experience to delete if there are any in Bucket List
+        val indexToDelete = ScannerInput.readNextInt("Enter the index of the experience to delete: ")
+        //pass the index of the experience to ExperienceAPI for deleting and check for success.
+        val experienceToDelete = experienceAPI.deleteExperience(indexToDelete)
+        if (experienceToDelete != null) {
+            println("Delete Successful! Deleted experience: ${experienceToDelete.experienceTitle}")
+        }
+        else {
+            println("Delete NOT Successful")
+        }
+    }
 }
 
 fun crossOffExperience(){
