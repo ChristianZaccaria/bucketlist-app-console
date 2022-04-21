@@ -222,4 +222,23 @@ class ExperienceAPITest {
         }
     }
 
+    @Nested
+    inner class DeleteExperiences {
+        @Test
+        fun `deleting an Experience that does not exist, returns null`() {
+            Assertions.assertNull(emptyExperiences!!.deleteExperience(0))
+            Assertions.assertNull(populatedExperiences!!.deleteExperience(-1))
+            Assertions.assertNull(populatedExperiences!!.deleteExperience(5))
+        }
+
+        @Test
+        fun `deleting an Experience that exists delete and returns deleted object`() {
+            Assertions.assertEquals(5, populatedExperiences!!.numberOfExperiences())
+            assertEquals(concert, populatedExperiences!!.deleteExperience(4))
+            Assertions.assertEquals(4, populatedExperiences!!.numberOfExperiences())
+            assertEquals(learnPiano, populatedExperiences!!.deleteExperience(0))
+            Assertions.assertEquals(3, populatedExperiences!!.numberOfExperiences())
+        }
+    }
+
 }
