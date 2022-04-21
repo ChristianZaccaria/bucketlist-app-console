@@ -66,4 +66,24 @@ class ExperienceAPITest {
             assertEquals(newExperience, emptyExperiences!!.findExperience(emptyExperiences!!.numberOfExperiences() - 1))
         }
     }
+
+    @Nested
+    inner class ListExperiences {
+        @Test
+        fun `listAllExperiences returns No Experiences Stored message when ArrayList is empty`() {
+            assertEquals(0, emptyExperiences!!.numberOfExperiences())
+            assertTrue(emptyExperiences!!.listAllExperiences().lowercase().contains("no experiences"))
+        }
+
+        @Test
+        fun `listAllExperiences returns Experiences when ArrayList has experiences stored`() {
+            assertEquals(5, populatedExperiences!!.numberOfExperiences())
+            val experiencesString = populatedExperiences!!.listAllExperiences().lowercase()
+            assertTrue(experiencesString.contains("learning"))
+            assertTrue(experiencesString.contains("summer holiday"))
+            assertTrue(experiencesString.contains("rock climbing"))
+            assertTrue(experiencesString.contains("graduate"))
+            assertTrue(experiencesString.contains("ed sheeran"))
+        }
+    }
 }
