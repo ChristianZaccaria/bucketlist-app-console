@@ -1,8 +1,11 @@
+import controllers.ExperienceAPI
+import models.Experience
 import mu.KotlinLogging
 import utils.ScannerInput
 import java.lang.System.exit
 
 private val logger = KotlinLogging.logger {}
+private val experienceAPI = ExperienceAPI()
 
 
 fun main(args: Array<String>) {
@@ -53,11 +56,26 @@ fun runMenu(){
 
 
 fun addExperience(){
-    logger.info { "addExperience() function invoked" }
+    //logger.info { "addExperience() function invoked" }
+    var experienceTitle = ScannerInput.readNextLine("Enter a Title for the experience: ")
+    var experienceDescription = ScannerInput.readNextLine("Enter a Description for the experience: ")
+    var experienceCategory = ScannerInput.readNextLine("Enter the Category of the experience: ")
+    var dateToAchieve = ScannerInput.readNextLine("Enter the Date to achieve the experience: ")
+    var experiencePriority = ScannerInput.readNextInt("Enter priority (1-low, 2, 3, 4, 5-high): ")
+
+    val isAdded = experienceAPI.add(Experience(experienceTitle, experienceDescription, experienceCategory, dateToAchieve, experiencePriority, false))
+
+    if (isAdded) {
+        println("Added Successfully")
+    }
+    else {
+        println("Add Failed")
+    }
 }
 
 fun listExperiences(){
-    logger.info { "listExperiences() function invoked" }
+    //logger.info { "listExperiences() function invoked" }
+    println(experienceAPI.listAllExperiences())
 }
 
 fun updateExperience(){
