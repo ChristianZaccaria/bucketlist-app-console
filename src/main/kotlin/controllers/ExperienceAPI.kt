@@ -19,7 +19,20 @@ class ExperienceAPI {
 
 
 
+    fun numberOfExperiences(): Int {
+        return experiences.size
+    }
 
+    fun findExperience(index: Int): Experience? {
+        return if (isValidListIndex(index, experiences)) {
+            experiences[index]
+        } else null
+    }
+
+    //utility method to determine if an index is valid in a list.
+    fun isValidListIndex(index: Int, list: List<Any>): Boolean {
+        return (index >= 0 && index < list.size)
+    }
 
     //Helper Method
     fun formatListString(experiencesToFormat : List<Experience>) : String =
