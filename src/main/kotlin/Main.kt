@@ -3,9 +3,14 @@ import models.Experience
 import mu.KotlinLogging
 import persistence.JSONSerializer
 import persistence.XMLSerializer
+import utils.CategoryUtility.categories
+import utils.CategoryUtility.isValidCategory
 import utils.ScannerInput
 import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
+import utils.Utilities
+import utils.Utilities.isValidText
+import utils.Utilities.validRange
 import java.io.File
 import java.lang.System.exit
 
@@ -64,10 +69,22 @@ fun runMenu(){
 fun addExperience(){
     //logger.info { "addExperience() function invoked" }
     var experienceTitle = readNextLine("Enter a title for the experience: ")
+    while(!isValidText(experienceTitle))
+    experienceTitle = readNextLine("Please enter a title for the experience: ")
+
     var experienceDescription = readNextLine("Enter a description for the experience: ")
-    var experienceCategory = readNextLine("Enter one of the categories: [Hobby, Concert, Travel, Career, Entertainment, Other] ")
-    var dateToAchieve = readNextLine("Enter the date you plan to achieve the experience: ")
+    while(!isValidText(experienceDescription))
+    experienceDescription = readNextLine("Please enter a description for the experience: ")
+
+    var experienceCategory = readNextLine("Enter one of the categories: $categories ")
+    while(!isValidCategory(experienceCategory.lowercase()))
+    experienceCategory = readNextLine("Please enter one of the categories: $categories")
+
+    var dateToAchieve = readNextLine("Enter the date you plan to achieve the experience (if any): ")
+
     var experiencePriority = readNextInt("Enter a priority [1-low, 2, 3, 4, 5-high]: ")
+    while (!validRange(experiencePriority, 1, 5))
+    experiencePriority = readNextInt("Please enter a priority [1-low, 2, 3, 4, 5-high]: ")
 
     val isAdded = experienceAPI.add(Experience(experienceTitle, experienceDescription, experienceCategory, dateToAchieve, experiencePriority, false))
 
@@ -155,10 +172,22 @@ fun updateExperience(){
         val indexToUpdate = readNextInt("Enter the index of the experience to update: ")
         if (experienceAPI.isValidIndex(indexToUpdate)) {
             var experienceTitle = readNextLine("Enter a title for the experience: ")
+            while(!isValidText(experienceTitle))
+                experienceTitle = readNextLine("Please enter a title for the experience: ")
+
             var experienceDescription = readNextLine("Enter a description for the experience: ")
-            var experienceCategory = readNextLine("Enter one of the categories: [Hobby, Concert, Travel, Career, Entertainment, Other] ")
-            var dateToAchieve = readNextLine("Enter the date you plan to achieve the experience: ")
+            while(!isValidText(experienceDescription))
+                experienceDescription = readNextLine("Please enter a description for the experience: ")
+
+            var experienceCategory = readNextLine("Enter one of the categories: $categories ")
+            while(!isValidCategory(experienceCategory.lowercase()))
+                experienceCategory = readNextLine("Please enter one of the categories: $categories")
+
+            var dateToAchieve = readNextLine("Enter the date you plan to achieve the experience (if any): ")
+
             var experiencePriority = readNextInt("Enter a priority [1-low, 2, 3, 4, 5-high]: ")
+            while (!validRange(experiencePriority, 1, 5))
+                experiencePriority = readNextInt("Please enter a priority [1-low, 2, 3, 4, 5-high]: ")
 
             //pass the index of the experience and the new experience details to ExperienceAPI for updating and check for success.
             if (experienceAPI.updateExperience(indexToUpdate, Experience(experienceTitle, experienceDescription, experienceCategory, dateToAchieve, experiencePriority, false))){

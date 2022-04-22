@@ -2,6 +2,7 @@ package controllers
 
 import models.Experience
 import persistence.Serializer
+import utils.Utilities.isValidListIndex
 
 class ExperienceAPI(serializerType: Serializer) {
 
@@ -121,10 +122,6 @@ class ExperienceAPI(serializerType: Serializer) {
 
 
 
-    //utility method to determine if an index is valid in a list.
-    fun isValidListIndex(index: Int, list: List<Any>): Boolean {
-        return (index >= 0 && index < list.size)
-    }
 
     fun isValidIndex(index: Int) :Boolean{
         return isValidListIndex(index, experiences);
