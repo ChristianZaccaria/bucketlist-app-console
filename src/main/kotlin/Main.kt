@@ -4,25 +4,24 @@ import mu.KotlinLogging
 import persistence.JSONSerializer
 import utils.CategoryUtility.categories
 import utils.CategoryUtility.isValidCategory
-import utils.ScannerInput
 import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
 import utils.Utilities.isValidText
 import utils.Utilities.validRange
 import java.io.File
-import java.lang.System.exit
+import kotlin.system.exitProcess
 
 private val logger = KotlinLogging.logger {}
 // private val experienceAPI = ExperienceAPI(XMLSerializer(File("experiences.xml")))
 private val experienceAPI = ExperienceAPI(JSONSerializer(File("experiences.json")))
 
-fun main(args: Array<String>) {
+fun main() {
 
     runMenu()
 }
 
 fun mainMenu(): Int {
-    return ScannerInput.readNextInt(
+    return readNextInt(
         """
          > ------------------------------------------
          > |            BUCKET LIST APP             |
@@ -45,8 +44,7 @@ fun mainMenu(): Int {
 
 fun runMenu() {
     do {
-        val option = mainMenu()
-        when (option) {
+        when (val option = mainMenu()) {
             1 -> addExperience()
             2 -> listExperiences()
             3 -> updateExperience()
@@ -71,11 +69,11 @@ fun addExperience() {
     while (!isValidText(experienceDescription))
         experienceDescription = readNextLine("Please enter a description for the experience: ")
 
-    var experienceCategory = readNextLine("Enter one of the categories: $categories ")
+    var experienceCategory = readNextLine("Enter one of the categories $categories : ")
     while (!isValidCategory(experienceCategory.lowercase()))
-        experienceCategory = readNextLine("Please enter one of the categories: $categories")
+        experienceCategory = readNextLine("Please enter one of the categories $categories : ")
 
-    var dateToAchieve = readNextLine("Enter the date you plan to achieve the experience (if any): ")
+    val dateToAchieve = readNextLine("Enter the date you plan to achieve the experience (if any): ")
 
     var experiencePriority = readNextInt("Enter a priority [1-low, 2, 3, 4, 5-high]: ")
     while (!validRange(experiencePriority, 1, 5))
@@ -167,11 +165,11 @@ fun updateExperience() {
             while (!isValidText(experienceDescription))
                 experienceDescription = readNextLine("Please enter a description for the experience: ")
 
-            var experienceCategory = readNextLine("Enter one of the categories: $categories ")
+            var experienceCategory = readNextLine("Enter one of the categories $categories : ")
             while (!isValidCategory(experienceCategory.lowercase()))
-                experienceCategory = readNextLine("Please enter one of the categories: $categories")
+                experienceCategory = readNextLine("Please enter one of the categories $categories : ")
 
-            var dateToAchieve = readNextLine("Enter the date you plan to achieve the experience (if any): ")
+            val dateToAchieve = readNextLine("Enter the date you plan to achieve the experience (if any): ")
 
             var experiencePriority = readNextInt("Enter a priority [1-low, 2, 3, 4, 5-high]: ")
             while (!validRange(experiencePriority, 1, 5))
@@ -248,5 +246,5 @@ fun load() {
 
 fun exitApp() {
     logger.info { "exitApp() function invoked" }
-    exit(0)
+    exitProcess(0)
 }

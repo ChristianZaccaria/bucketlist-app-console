@@ -41,7 +41,7 @@ class ExperienceAPI(serializerType: Serializer) {
                 .joinToString(separator = "\n") { experience -> experiences.indexOf(experience).toString() + ": " + experience.toString() }
 
     // helper method to determine how many experiences there are of a specific priority
-    fun numberOfExperiencesByPriority(priorityToCheck: Int): Int = experiences.count { experience: Experience -> experience.experiencePriority == priorityToCheck }
+    private fun numberOfExperiencesByPriority(priorityToCheck: Int): Int = experiences.count { experience: Experience -> experience.experiencePriority == priorityToCheck }
 
     fun listExperiencesByCategory(category: String): String =
         if (experiences.isEmpty()) "no experiences stored in your Bucket List"
@@ -52,7 +52,7 @@ class ExperienceAPI(serializerType: Serializer) {
             experiences.filter { experience -> experience.experienceCategory.lowercase() == category.lowercase() }
                 .joinToString(separator = "\n") { experience -> experiences.indexOf(experience).toString() + ": " + experience.toString() }
 
-    fun numberOfExperiencesByCategory(categoryCheck: String): Int = experiences.count { experience: Experience -> experience.experienceCategory.lowercase() == categoryCheck.lowercase() }
+    private fun numberOfExperiencesByCategory(categoryCheck: String): Int = experiences.count { experience: Experience -> experience.experienceCategory.lowercase() == categoryCheck.lowercase() }
 
     fun deleteExperience(indexToDelete: Int): Experience? {
         return if (isValidListIndex(indexToDelete, experiences)) {
@@ -109,7 +109,7 @@ class ExperienceAPI(serializerType: Serializer) {
     }
 
     // Helper Method
-    fun formatListString(experiencesToFormat: List<Experience>): String =
+    private fun formatListString(experiencesToFormat: List<Experience>): String =
         experiencesToFormat
             .joinToString(separator = "\n") { experience ->
                 experiences.indexOf(experience).toString() + ": " + experience.toString()
