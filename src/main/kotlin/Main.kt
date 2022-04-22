@@ -206,7 +206,12 @@ fun crossOffExperience(){
 }
 
 fun searchExperiences(){
-    logger.info { "searchExperiences() function invoked" }
+    //logger.info { "searchExperiences() function invoked" }
+        val searchTitle = readNextLine("Enter the description you wish to search: ")
+        val searchResults = experienceAPI.searchByTitle(searchTitle)
+        if (searchResults.isEmpty()) println("No experiences found!")
+        else println(searchResults)
+
 }
 
 

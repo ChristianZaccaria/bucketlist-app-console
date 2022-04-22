@@ -114,6 +114,10 @@ class ExperienceAPI(serializerType: Serializer) {
         return false
     }
 
+    fun searchByTitle(title: String) =
+        formatListString(
+            experiences.filter {experience -> experience.experienceTitle.lowercase().contains(title.lowercase())} )
+
 
 
 
