@@ -2,7 +2,7 @@ package utils
 
 object Utilities {
 
-    //utility method to determine if an index is valid in a list.
+    // utility method to determine if an index is valid in a list.
     @JvmStatic
     fun isValidListIndex(index: Int, list: List<Any>): Boolean {
         return (index >= 0 && index < list.size)
@@ -17,5 +17,4 @@ object Utilities {
     fun isValidText(input: String): Boolean {
         return (input != "")
     }
-
 }

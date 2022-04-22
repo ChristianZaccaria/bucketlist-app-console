@@ -2,32 +2,28 @@ import controllers.ExperienceAPI
 import models.Experience
 import mu.KotlinLogging
 import persistence.JSONSerializer
-import persistence.XMLSerializer
 import utils.CategoryUtility.categories
 import utils.CategoryUtility.isValidCategory
 import utils.ScannerInput
 import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
-import utils.Utilities
 import utils.Utilities.isValidText
 import utils.Utilities.validRange
 import java.io.File
 import java.lang.System.exit
 
 private val logger = KotlinLogging.logger {}
-//private val experienceAPI = ExperienceAPI(XMLSerializer(File("experiences.xml")))
+// private val experienceAPI = ExperienceAPI(XMLSerializer(File("experiences.xml")))
 private val experienceAPI = ExperienceAPI(JSONSerializer(File("experiences.json")))
-
 
 fun main(args: Array<String>) {
 
     runMenu()
-
 }
 
-
-fun mainMenu() : Int {
-    return ScannerInput.readNextInt("""
+fun mainMenu(): Int {
+    return ScannerInput.readNextInt(
+        """
          > ------------------------------------------
          > |            BUCKET LIST APP             |
          > ------------------------------------------
@@ -43,11 +39,11 @@ fun mainMenu() : Int {
          > ------------------------------------------
          > |   0) Exit                              |
          > ------------------------------------------
-         > ==>>""".trimMargin(">"))
+         > ==>>""".trimMargin(">")
+    )
 }
 
-
-fun runMenu(){
+fun runMenu() {
     do {
         val option = mainMenu()
         when (option) {
@@ -60,46 +56,45 @@ fun runMenu(){
             20 -> save()
             21 -> load()
             0 -> exitApp()
-            else -> println("Invalid option entered: ${option}")
+            else -> println("Invalid option entered: $option")
         }
     } while (true)
 }
 
-
-fun addExperience(){
-    //logger.info { "addExperience() function invoked" }
+fun addExperience() {
+    // logger.info { "addExperience() function invoked" }
     var experienceTitle = readNextLine("Enter a title for the experience: ")
-    while(!isValidText(experienceTitle))
-    experienceTitle = readNextLine("Please enter a title for the experience: ")
+    while (!isValidText(experienceTitle))
+        experienceTitle = readNextLine("Please enter a title for the experience: ")
 
     var experienceDescription = readNextLine("Enter a description for the experience: ")
-    while(!isValidText(experienceDescription))
-    experienceDescription = readNextLine("Please enter a description for the experience: ")
+    while (!isValidText(experienceDescription))
+        experienceDescription = readNextLine("Please enter a description for the experience: ")
 
     var experienceCategory = readNextLine("Enter one of the categories: $categories ")
-    while(!isValidCategory(experienceCategory.lowercase()))
-    experienceCategory = readNextLine("Please enter one of the categories: $categories")
+    while (!isValidCategory(experienceCategory.lowercase()))
+        experienceCategory = readNextLine("Please enter one of the categories: $categories")
 
     var dateToAchieve = readNextLine("Enter the date you plan to achieve the experience (if any): ")
 
     var experiencePriority = readNextInt("Enter a priority [1-low, 2, 3, 4, 5-high]: ")
     while (!validRange(experiencePriority, 1, 5))
-    experiencePriority = readNextInt("Please enter a priority [1-low, 2, 3, 4, 5-high]: ")
+        experiencePriority = readNextInt("Please enter a priority [1-low, 2, 3, 4, 5-high]: ")
 
     val isAdded = experienceAPI.add(Experience(experienceTitle, experienceDescription, experienceCategory, dateToAchieve, experiencePriority, false))
 
     if (isAdded) {
         println("Added Successfully")
-    }
-    else {
+    } else {
         println("Add Failed")
     }
 }
 
-fun listExperiences(){
-    //logger.info { "listExperiences() function invoked" }
+fun listExperiences() {
+    // logger.info { "listExperiences() function invoked" }
     if (experienceAPI.numberOfExperiences() > 0) {
-        val option = readNextInt("""
+        val option = readNextInt(
+            """
                   > -----------------------------------------------
                   > |  1) View ALL experiences                    |
                   > |  2) View Not Yet Achieved Experiences       |
@@ -108,8 +103,8 @@ fun listExperiences(){
                   > |  5) View Least Important Experiences (1-3)  |
                   > |  6) View Experiences by Category            |
                   > -----------------------------------------------
-          > ==>>""".trimMargin(">"))
-
+          > ==>>""".trimMargin(">")
+        )
 
         when (option) {
             1 -> listAllExperiences()
@@ -120,10 +115,7 @@ fun listExperiences(){
             6 -> listCategoryExperiences()
             else -> println("Invalid option entered $option")
         }
-
-
-    }
-    else {
+    } else {
         println("Option Invalid - No Experiences Stored in your Bucket List")
     }
 }
@@ -158,29 +150,25 @@ fun listCategoryExperiences() {
     println(experienceAPI.listExperiencesByCategory("Career"))
     println(experienceAPI.listExperiencesByCategory("Entertainment"))
     println(experienceAPI.listExperiencesByCategory("Other"))
-
-
 }
 
-
-
-fun updateExperience(){
-    //logger.info { "updateExperience() function invoked" }
+fun updateExperience() {
+    // logger.info { "updateExperience() function invoked" }
     listExperiences()
     if (experienceAPI.numberOfExperiences() > 0) {
-        //only ask the user to choose the experience if there are any in the Bucket List
+        // only ask the user to choose the experience if there are any in the Bucket List
         val indexToUpdate = readNextInt("Enter the index of the experience to update: ")
         if (experienceAPI.isValidIndex(indexToUpdate)) {
             var experienceTitle = readNextLine("Enter a title for the experience: ")
-            while(!isValidText(experienceTitle))
+            while (!isValidText(experienceTitle))
                 experienceTitle = readNextLine("Please enter a title for the experience: ")
 
             var experienceDescription = readNextLine("Enter a description for the experience: ")
-            while(!isValidText(experienceDescription))
+            while (!isValidText(experienceDescription))
                 experienceDescription = readNextLine("Please enter a description for the experience: ")
 
             var experienceCategory = readNextLine("Enter one of the categories: $categories ")
-            while(!isValidCategory(experienceCategory.lowercase()))
+            while (!isValidCategory(experienceCategory.lowercase()))
                 experienceCategory = readNextLine("Please enter one of the categories: $categories")
 
             var dateToAchieve = readNextLine("Enter the date you plan to achieve the experience (if any): ")
@@ -189,8 +177,8 @@ fun updateExperience(){
             while (!validRange(experiencePriority, 1, 5))
                 experiencePriority = readNextInt("Please enter a priority [1-low, 2, 3, 4, 5-high]: ")
 
-            //pass the index of the experience and the new experience details to ExperienceAPI for updating and check for success.
-            if (experienceAPI.updateExperience(indexToUpdate, Experience(experienceTitle, experienceDescription, experienceCategory, dateToAchieve, experiencePriority, false))){
+            // pass the index of the experience and the new experience details to ExperienceAPI for updating and check for success.
+            if (experienceAPI.updateExperience(indexToUpdate, Experience(experienceTitle, experienceDescription, experienceCategory, dateToAchieve, experiencePriority, false))) {
                 println("Update Successful")
             } else {
                 println("Update Failed")
@@ -201,48 +189,44 @@ fun updateExperience(){
     }
 }
 
-fun deleteExperience(){
-    //logger.info { "deleteExperience() function invoked" }
+fun deleteExperience() {
+    // logger.info { "deleteExperience() function invoked" }
     listExperiences()
     if (experienceAPI.numberOfExperiences() > 0) {
-        //only ask the user to choose the experience to delete if there are any in Bucket List
+        // only ask the user to choose the experience to delete if there are any in Bucket List
         val indexToDelete = readNextInt("Enter the index of the experience to delete: ")
-        //pass the index of the experience to ExperienceAPI for deleting and check for success.
+        // pass the index of the experience to ExperienceAPI for deleting and check for success.
         val experienceToDelete = experienceAPI.deleteExperience(indexToDelete)
         if (experienceToDelete != null) {
             println("Delete Successful! Deleted experience: ${experienceToDelete.experienceTitle}")
-        }
-        else {
+        } else {
             println("Delete NOT Successful")
         }
     }
 }
 
-fun crossOffExperience(){
-    //logger.info { "crossOffExperience() function invoked" }
+fun crossOffExperience() {
+    // logger.info { "crossOffExperience() function invoked" }
     println(experienceAPI.listNotYetAchievedExperiences())
     if (experienceAPI.numberOfNotYetAchievedExperiences() > 0) {
-        //only ask the user to choose the experience to set to 'Achieved' if not yet achieved ones exist
+        // only ask the user to choose the experience to set to 'Achieved' if not yet achieved ones exist
         val indexToAchieve = readNextInt("Enter the index of the experience you have achieved: ")
-        //pass the index of the experience to ExperienceAPI and check for success.
+        // pass the index of the experience to ExperienceAPI and check for success.
         if (experienceAPI.achieveExperience(indexToAchieve)) {
             println("Well Done on your Achievement!")
-        }
-        else{
+        } else {
             println("Changing the experience to 'Achieved' was NOT successful.")
         }
     }
 }
 
-fun searchExperiences(){
-    //logger.info { "searchExperiences() function invoked" }
-        val searchTitle = readNextLine("Enter the description you wish to search: ")
-        val searchResults = experienceAPI.searchByTitle(searchTitle)
-        if (searchResults.isEmpty()) println("No experiences found!")
-        else println(searchResults)
-
+fun searchExperiences() {
+    // logger.info { "searchExperiences() function invoked" }
+    val searchTitle = readNextLine("Enter the description you wish to search: ")
+    val searchResults = experienceAPI.searchByTitle(searchTitle)
+    if (searchResults.isEmpty()) println("No experiences found!")
+    else println(searchResults)
 }
-
 
 fun save() {
     try {
@@ -263,6 +247,6 @@ fun load() {
 }
 
 fun exitApp() {
-        logger.info { "exitApp() function invoked" }
-        exit(0)
-    }
+    logger.info { "exitApp() function invoked" }
+    exit(0)
+}

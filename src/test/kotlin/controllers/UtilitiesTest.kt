@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test
 import utils.Utilities.isValidText
 import utils.Utilities.validRange
 
-
 class UtilitiesTest {
 
     @Nested
@@ -42,7 +41,4 @@ class UtilitiesTest {
             Assertions.assertFalse(isValidText(""))
         }
     }
-
-
-
 }

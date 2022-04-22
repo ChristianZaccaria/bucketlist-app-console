@@ -7,7 +7,7 @@ import utils.CategoryUtility.isValidCategory
 
 internal class CategoryUtilityTest {
     @Test
-    fun categoriesReturnsFullCategoriesSet(){
+    fun categoriesReturnsFullCategoriesSet() {
         Assertions.assertEquals(6, categories.size)
         Assertions.assertTrue(categories.contains("Hobby"))
         Assertions.assertTrue(categories.contains("Concert"))
@@ -15,14 +15,14 @@ internal class CategoryUtilityTest {
     }
 
     @Test
-    fun isValidCategoryTrueWhenCategoryExists(){
+    fun isValidCategoryTrueWhenCategoryExists() {
         Assertions.assertTrue(isValidCategory("Hobby"))
         Assertions.assertTrue(isValidCategory("hobby"))
         Assertions.assertTrue(isValidCategory("CONCERT"))
     }
 
     @Test
-    fun isValidCategoryFalseWhenCategoryDoesNotExist(){
+    fun isValidCategoryFalseWhenCategoryDoesNotExist() {
         Assertions.assertFalse(isValidCategory("Hob"))
         Assertions.assertFalse(isValidCategory("concerrt"))
         Assertions.assertFalse(isValidCategory(""))
