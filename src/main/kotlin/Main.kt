@@ -127,7 +127,19 @@ fun deleteExperience(){
 }
 
 fun crossOffExperience(){
-    logger.info { "crossOffExperience() function invoked" }
+    //logger.info { "crossOffExperience() function invoked" }
+    println(experienceAPI.listNotYetAchievedExperiences())
+    if (experienceAPI.numberOfNotYetAchievedExperiences() > 0) {
+        //only ask the user to choose the experience to set to 'Achieved' if not yet achieved ones exist
+        val indexToAchieve = readNextInt("Enter the index of the experience you have achieved: ")
+        //pass the index of the experience to ExperienceAPI and check for success.
+        if (experienceAPI.achieveExperience(indexToAchieve)) {
+            println("Well Done on your Achievement!")
+        }
+        else{
+            println("Changing the experience to 'Achieved' was NOT successful.")
+        }
+    }
 }
 
 fun searchExperiences(){
