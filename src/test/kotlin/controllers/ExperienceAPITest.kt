@@ -354,6 +354,31 @@ class ExperienceAPITest {
             }
         }
 
+    @Nested
+    inner class AchieveExperiences {
+        @Test
+        fun `setting an experience to Achieved that does not exist returns false`() {
+            assertFalse(populatedExperiences!!.achieveExperience(6))
+            assertFalse(populatedExperiences!!.achieveExperience(-1))
+            assertFalse(emptyExperiences!!.achieveExperience(0))
+        }
+
+
+        @Test
+        fun `setting to 'Achieved' an already achieved experience returns false`() {
+            assertTrue(populatedExperiences!!.findExperience(3)!!.isExperienceAchieved)
+            assertFalse(populatedExperiences!!.achieveExperience(3))
+        }
+
+
+        @Test
+        fun `setting a not yet achieved experience to 'Achieved' that exists returns true and changes are made`() {
+            assertFalse(populatedExperiences!!.findExperience(1)!!.isExperienceAchieved)
+            assertTrue(populatedExperiences!!.achieveExperience(1))
+            assertTrue(populatedExperiences!!.findExperience(1)!!.isExperienceAchieved)
+        }
+    }
+
 
 
 
