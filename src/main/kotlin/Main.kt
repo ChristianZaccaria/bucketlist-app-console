@@ -81,8 +81,71 @@ fun addExperience(){
 
 fun listExperiences(){
     //logger.info { "listExperiences() function invoked" }
+    if (experienceAPI.numberOfExperiences() > 0) {
+        val option = readNextInt("""
+                  > -----------------------------------------------
+                  > |  1) View ALL experiences                    |
+                  > |  2) View Not Yet Achieved Experiences       |
+                  > |  3) View ACHIEVED experiences               |
+                  > |  4) View Most Important Experiences (4-5)   |
+                  > |  5) View Least Important Experiences (1-3)  |
+                  > |  6) View Experiences by Category            |
+                  > -----------------------------------------------
+          > ==>>""".trimMargin(">"))
+
+
+        when (option) {
+            1 -> listAllExperiences()
+            2 -> listNotYetAchievedExperiences()
+            3 -> listAchievedExperiences()
+            4 -> listPriority4and5()
+            5 -> listPriority1and2and3()
+            6 -> listCategoryExperiences()
+            else -> println("Invalid option entered $option")
+        }
+
+
+    }
+    else {
+        println("Option Invalid - No Experiences Stored in your Bucket List")
+    }
+}
+
+fun listAllExperiences() {
     println(experienceAPI.listAllExperiences())
 }
+
+fun listNotYetAchievedExperiences() {
+    println(experienceAPI.listNotYetAchievedExperiences())
+}
+
+fun listAchievedExperiences() {
+    println(experienceAPI.listAchievedExperiences())
+}
+
+fun listPriority4and5() {
+    println(experienceAPI.listExperiencesBySelectedPriority(5))
+    println(experienceAPI.listExperiencesBySelectedPriority(4))
+}
+
+fun listPriority1and2and3() {
+    println(experienceAPI.listExperiencesBySelectedPriority(3))
+    println(experienceAPI.listExperiencesBySelectedPriority(2))
+    println(experienceAPI.listExperiencesBySelectedPriority(1))
+}
+
+fun listCategoryExperiences() {
+    println(experienceAPI.listExperiencesByCategory("Hobby"))
+    println(experienceAPI.listExperiencesByCategory("Concert"))
+    println(experienceAPI.listExperiencesByCategory("Travel"))
+    println(experienceAPI.listExperiencesByCategory("Career"))
+    println(experienceAPI.listExperiencesByCategory("Entertainment"))
+    println(experienceAPI.listExperiencesByCategory("Other"))
+
+
+}
+
+
 
 fun updateExperience(){
     //logger.info { "updateExperience() function invoked" }
