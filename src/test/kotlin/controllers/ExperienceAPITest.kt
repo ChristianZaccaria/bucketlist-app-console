@@ -379,6 +379,42 @@ class ExperienceAPITest {
         }
     }
 
+    @Nested
+    inner class searchExperiencesByTitle {
+        @Test
+        fun `search experiences by title returns no experiences when no experiences with that title exist`() {
+            Assertions.assertEquals(5, populatedExperiences!!.numberOfExperiences())
+            val searchResults = populatedExperiences!!.searchByTitle("no results expected")
+            assertTrue(searchResults.isEmpty())
+
+            //Searching an empty collection
+            Assertions.assertEquals(0, emptyExperiences!!.numberOfExperiences())
+            assertTrue(emptyExperiences!!.searchByTitle("").isEmpty())
+        }
+
+        @Test
+        fun `search experiences by title returns experiences when experiences with that title exist`() {
+            Assertions.assertEquals(5, populatedExperiences!!.numberOfExperiences())
+
+            //Searching a populated collection for a full title that exists
+            var searchResults = populatedExperiences!!.searchByTitle("Going Rock Climbing")
+            assertTrue(searchResults.contains("Going Rock Climbing"))
+            assertFalse(searchResults.contains("Ed Sheeran Concert"))
+
+            //Searching a populated collection for a partial title that exists
+            searchResults = populatedExperiences!!.searchByTitle("Rock Climbing")
+            assertTrue(searchResults.contains("Climbing"))
+            assertFalse(searchResults.contains("Ed Sheeran Concert"))
+
+            //Searching a populated collection for a partial title that exists (case does not affect search)
+            searchResults = populatedExperiences!!.searchByTitle("roCk cLiMbing")
+            assertTrue(searchResults.contains("Rock Climbing"))
+            assertTrue(searchResults.contains("Climbing"))
+            assertFalse(searchResults.contains("Ed Sheeran Concert"))
+        }
+
+    }
+
 
 
 
