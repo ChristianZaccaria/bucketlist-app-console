@@ -25,7 +25,7 @@ This app was developed using **Kotlin :star::star::star::star::star:**
 This app lets you add the experiences or accomplishments you wish to achieve during your lifetime. You can list them, edit them, and also delete them. You can also view which ones have been achieved and which have not been. Some examples of how it can be used:
 - Save the ideas you have of experiences you wish to achieve.
 - You can make a list based on level of priority (1-low, 2, 3, 4, 5-high)
-- You can input a date to an experience to push yourself achieve the experience.
+- You can input a date to an experience to push yourself to achieve the experience.
 
 ## Getting Started with the Project
 Once you run the app, you will be prompted to enter a number to choose an option from the menu.
@@ -33,6 +33,6 @@ Once you run the app, you will be prompted to enter a number to choose an option
 ![Screenshot (275)](https://user-images.githubusercontent.com/73656840/164728039-6e4a4292-307c-4ecd-bd25-c7b3d1f1e546.png)
 
 
-## Project Author / Contributers
+## Project Author / Contributors
 :star2:	Christian Zaccaria *(Software Systems Development Year 2)*
 
