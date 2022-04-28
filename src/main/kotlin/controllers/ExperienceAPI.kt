@@ -116,6 +116,7 @@ class ExperienceAPI(serializerType: Serializer) {
             }
 
     @Throws(Exception::class)
+    @Suppress("UNCHECKED_CAST")
     fun load() {
         experiences = serializer.read() as ArrayList<Experience>
     }
