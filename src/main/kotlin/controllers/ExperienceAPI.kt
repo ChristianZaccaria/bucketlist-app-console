@@ -34,11 +34,11 @@ class ExperienceAPI(serializerType: Serializer) {
     fun listExperiencesBySelectedPriority(priority: Int): String =
         if (experiences.isEmpty()) "no experiences stored in your Bucket List"
 
-        else if (numberOfExperiencesByPriority(priority) == 0) "\nNo experiences with priority: $priority"
+        else if (numberOfExperiencesByPriority(priority) == 0) "\nNo experiences with priority $priority:"
 
         else "\n${numberOfExperiencesByPriority(priority)} experiences with priority $priority:\n" +
-            experiences.filter { experience -> experience.experiencePriority == priority }
-                .joinToString(separator = "\n") { experience -> experiences.indexOf(experience).toString() + ": " + experience.toString() }
+            formatListString(experiences.filter { experience -> experience.experiencePriority == priority })
+
 
     // helper method to determine how many experiences there are of a specific priority
     private fun numberOfExperiencesByPriority(priorityToCheck: Int): Int = experiences.count { experience: Experience -> experience.experiencePriority == priorityToCheck }
@@ -49,8 +49,8 @@ class ExperienceAPI(serializerType: Serializer) {
         else if (numberOfExperiencesByCategory(category) == 0) "\nNo experiences with category: ${category.lowercase()}"
 
         else "\n${numberOfExperiencesByCategory(category.lowercase())} experiences with category ${category.lowercase()}\n" +
-            experiences.filter { experience -> experience.experienceCategory.lowercase() == category.lowercase() }
-                .joinToString(separator = "\n") { experience -> experiences.indexOf(experience).toString() + ": " + experience.toString() }
+            formatListString(experiences.filter { experience -> experience.experienceCategory.lowercase() == category.lowercase() })
+
 
     private fun numberOfExperiencesByCategory(categoryCheck: String): Int = experiences.count { experience: Experience -> experience.experienceCategory.lowercase() == categoryCheck.lowercase() }
 
